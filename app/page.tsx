@@ -56,7 +56,13 @@ export default function Home() {
   };
 
   const runJourney = (journey: Journey) => {
-    setAppointment({ ...initialAppointment, events: [...initialAppointment.events] });
+    const journeyAppointment = { ...initialAppointment, events: [...initialAppointment.events] };
+    if (journey.scenario === "complete") {
+      journeyAppointment.status = "confirmed";
+      journeyAppointment.accountStatus = "open";
+      journeyAppointment.events.push("Cita confirmada · hoy, 09:48", "Llegada registrada · Account abierta");
+    }
+    setAppointment(journeyAppointment);
     setActiveJourney(journey);
     setSurface(journey.surface);
     setScreen(journey.screen);
