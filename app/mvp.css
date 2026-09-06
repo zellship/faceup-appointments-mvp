@@ -94,3 +94,9 @@
   .zs-locations-table>div:not(.head){grid-template-columns:1fr 1fr}
   .zs-locations-table>div:not(.head)>.zs-dots{grid-column:2;justify-self:end}
 }
+
+
+/* Appointment forms start empty and reveal calculated state only after required input. */
+.zs-inline-pending{display:flex;flex-direction:column;margin-top:10px;padding:9px 11px;border:1px solid #d9d9d9;border-radius:4px;background:#fafafa;color:#595959}
+.zs-inline-pending b{font-size:9px}.zs-inline-pending span{margin-top:2px;font-size:9px}.zs-inline-pending small{margin-top:3px;color:#8c8c8c;font-size:8px}
+.zs-app button:disabled,.zs-app input:disabled,.zs-app select:disabled{cursor:not-allowed;opacity:.48}
