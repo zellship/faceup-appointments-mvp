@@ -1,7 +1,16 @@
 export type Surface = "MVP" | "POS" | "ADMIN" | "JOURNEYS" | "INSPECT";
 export type AppointmentStatus = "scheduled" | "confirmed" | "canceled" | "completed";
 export type AccountStatus = "reserved" | "open" | "close";
+export type CommandItemStatus = "reserved" | "in_progress" | "completed" | "canceled";
+export type InventoryStatus = "not_applicable" | "held" | "consumed" | "released";
 export type EvidenceKind = "as-is" | "to-be" | "pending";
+
+export type PaymentContributionRecord = {
+  id: string;
+  amount: number;
+  method: "Efectivo" | "TDC" | "TDD" | "Transferencia" | "Otros";
+  createdAt: string;
+};
 
 export type AccountServiceRecord = {
   appointmentId: string;
@@ -17,8 +26,11 @@ export type AccountServiceRecord = {
   time: string;
   endTime: string;
   status: AppointmentStatus;
+  commandItemStatus: CommandItemStatus;
   price: number;
-  inventoryHeld: boolean;
+  inventoryStatus: InventoryStatus;
+  bufferBefore: number;
+  bufferAfter: number;
 };
 
 export type AppointmentRecord = {
@@ -41,7 +53,7 @@ export type AppointmentRecord = {
   status: AppointmentStatus;
   accountStatus: AccountStatus;
   price: number;
-  paidAmount: number;
+  paymentContributions: PaymentContributionRecord[];
   inventoryHeld: boolean;
   noShowLogged: boolean;
   events: string[];
@@ -78,7 +90,7 @@ export const initialAppointment: AppointmentRecord = {
   status: "scheduled",
   accountStatus: "reserved",
   price: 2130,
-  paidAmount: 0,
+  paymentContributions: [],
   inventoryHeld: true,
   noShowLogged: false,
   events: ["Cita creada · hoy, 09:42", "Cuenta reservada generada · CTA-03184"],
@@ -96,8 +108,11 @@ export const initialAppointment: AppointmentRecord = {
     time: "11:30",
     endTime: "12:50",
     status: "scheduled",
+    commandItemStatus: "reserved",
     price: 2130,
-    inventoryHeld: true,
+    inventoryStatus: "held",
+    bufferBefore: 10,
+    bufferAfter: 10,
   }],
 };
 
@@ -171,12 +186,12 @@ export const journeys: Journey[] = [
   { id: "R-10", title: "No-show", description: "Registra no-show y revisa las opciones posteriores sin crear otro estado.", surface: "POS", screen: "detail", scenario: "no-show", issue: "ZEL-2769" },
   { id: "R-11", title: "Completar", description: "Completa la cita y verifica que la Cuenta no se cierre automáticamente.", surface: "POS", screen: "detail", scenario: "complete", issue: "ZEL-2769" },
   { id: "R-12", title: "Experiencia móvil", description: "Alterna Día/Mes y abre Programar cita para completar el flujo móvil.", surface: "POS", screen: "mobile", scenario: "mobile", issue: "ZEL-2770" },
-  { id: "R-13", title: "Dos citas, una Cuenta", description: "Agrega otro servicio a la misma visita con cita, prestador y ubicación independientes.", surface: "POS", screen: "booking", scenario: "multi-account", issue: "ZEL-2768 · ZEL-2769" },
+  { id: "R-13", title: "Dos citas, una Cuenta", description: "Agrega otro servicio a la misma Cuenta con cita, prestador y ubicación independientes, sin traslapar intervalos.", surface: "POS", screen: "booking", scenario: "multi-account", issue: "ZEL-2768 · ZEL-2769" },
 ];
 
 export const helpContent: Record<string, { title: string; kind: EvidenceKind; body: string; tech?: string }> = {
   appointment: { title: "Cita", kind: "as-is", body: "La Agenda y Appointment existen. El MVP amplía su operación y disponibilidad.", tech: "Appointment · appointments" },
-  account: { title: "Cuenta de la visita", kind: "to-be", body: "Una cita puede crear una Account reservada o agregarse a una Account elegible de la misma visita. Reservada se abre; Abierta sólo se cierra cuando todos sus servicios están completados y el balance está liquidado.", tech: "Account · Commands · Command Items · Appointments" },
+  account: { title: "Cuenta de la visita", kind: "to-be", body: "Una cita puede crear una Account reservada o agregarse a una Account elegible de la misma visita. Cada servicio conserva su propia cita, Command y Command Item. La Cuenta abierta sólo se cierra cuando todos los Command Items están resueltos, no hay inventario retenido y el balance está liquidado.", tech: "Account · Commands · Command Items · Appointments · Payment Contributions" },
   consumption: { title: "Consumo", kind: "as-is", body: "Se conserva el enum global actual. Agenda no modifica su semántica.", tech: "SERVICE_TYPE.InPlace = 'consumo'" },
   provider: { title: "Prestador", kind: "to-be", body: "Puede ser User, Worker o resolverse como primer prestador disponible.", tech: "User · users / Worker · workers" },
   identity: { title: "Identidad compartida", kind: "pending", body: "TI debe definir cómo detectar que un User y un Worker representan a la misma persona." },
@@ -184,7 +199,7 @@ export const helpContent: Record<string, { title: string; kind: EvidenceKind; bo
   general: { title: "Ubicación General", kind: "to-be", body: "Se asigna automáticamente cuando el servicio no requiere recurso físico y no aparece entre las cabinas.", tech: "Service Location de sistema" },
   capacity: { title: "Capacidad de citas", kind: "pending", body: "Es independiente de la capacidad comercial actual. TI definirá su representación técnica." },
   offer: { title: "Servicio o Kit", kind: "to-be", body: "Product es el servicio simple; Mix es el kit configurable. No se relacionan directamente con Service Location.", tech: "Product · products / Mix · mixes" },
-  duration: { title: "Duración ocupada", kind: "to-be", body: "Incluye duración base, adicionales y buffers antes/después. Mix reutiliza handlingTime." },
+  duration: { title: "Duración ocupada", kind: "to-be", body: "Incluye duración base, adicionales y buffers antes/después. Mix reutiliza handlingTime. En el MVP, las citas de una misma Cuenta son secuenciales y no pueden traslaparse." },
   inventory: { title: "Retención aplicable", kind: "as-is", body: "El flujo actual de Command/Command Item retiene inventario. Sólo aplica a componentes que lo requieren." },
   concurrency: { title: "Concurrencia", kind: "pending", body: "El dummy demuestra el resultado funcional; TI define transacciones y restricciones." },
   reminder: { title: "Recordatorios", kind: "pending", body: "El primero ocurre 24 horas antes y el segundo es configurable. Email y WhatsApp requieren validación técnica." },

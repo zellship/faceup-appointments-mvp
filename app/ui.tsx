@@ -33,7 +33,7 @@ export function Modal({ title, eyebrow, children, onClose, className = "" }: { t
 }
 
 export function Status({ status }: { status: string }) {
-  const label: Record<string, string> = { scheduled: "Programada", confirmed: "Confirmada", canceled: "Cancelada", completed: "Completada", reserved: "Reservada", open: "Abierta", close: "Cerrada" };
+  const label: Record<string, string> = { scheduled: "Programada", confirmed: "Confirmada", canceled: "Cancelada", completed: "Completada", reserved: "Reservada", in_progress: "En proceso", open: "Abierta", close: "Cerrada" };
   return <span className={`zs-status ${status}`}>{label[status] ?? status}</span>;
 }
 
