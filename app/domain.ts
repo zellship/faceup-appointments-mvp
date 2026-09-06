@@ -1,6 +1,6 @@
 export type Surface = "MVP" | "POS" | "ADMIN" | "JOURNEYS" | "INSPECT";
 export type AppointmentStatus = "scheduled" | "confirmed" | "canceled" | "completed";
-export type AccountStatus = "reserved" | "open";
+export type AccountStatus = "reserved" | "open" | "close";
 export type EvidenceKind = "as-is" | "to-be" | "pending";
 
 export type AccountServiceRecord = {
@@ -41,6 +41,7 @@ export type AppointmentRecord = {
   status: AppointmentStatus;
   accountStatus: AccountStatus;
   price: number;
+  paidAmount: number;
   inventoryHeld: boolean;
   noShowLogged: boolean;
   events: string[];
@@ -77,6 +78,7 @@ export const initialAppointment: AppointmentRecord = {
   status: "scheduled",
   accountStatus: "reserved",
   price: 2130,
+  paidAmount: 0,
   inventoryHeld: true,
   noShowLogged: false,
   events: ["Cita creada · hoy, 09:42", "Cuenta reservada generada · CTA-03184"],
@@ -174,7 +176,7 @@ export const journeys: Journey[] = [
 
 export const helpContent: Record<string, { title: string; kind: EvidenceKind; body: string; tech?: string }> = {
   appointment: { title: "Cita", kind: "as-is", body: "La Agenda y Appointment existen. El MVP amplía su operación y disponibilidad.", tech: "Appointment · appointments" },
-  account: { title: "Cuenta de la visita", kind: "to-be", body: "Una cita puede crear una Account reservada o agregarse a una Account elegible de la misma visita. Cada servicio conserva su propia cita y operación.", tech: "Account · Commands · Command Items · Appointments" },
+  account: { title: "Cuenta de la visita", kind: "to-be", body: "Una cita puede crear una Account reservada o agregarse a una Account elegible de la misma visita. Reservada se abre; Abierta sólo se cierra cuando todos sus servicios están completados y el balance está liquidado.", tech: "Account · Commands · Command Items · Appointments" },
   consumption: { title: "Consumo", kind: "as-is", body: "Se conserva el enum global actual. Agenda no modifica su semántica.", tech: "SERVICE_TYPE.InPlace = 'consumo'" },
   provider: { title: "Prestador", kind: "to-be", body: "Puede ser User, Worker o resolverse como primer prestador disponible.", tech: "User · users / Worker · workers" },
   identity: { title: "Identidad compartida", kind: "pending", body: "TI debe definir cómo detectar que un User y un Worker representan a la misma persona." },
