@@ -100,3 +100,50 @@
 .zs-inline-pending{display:flex;flex-direction:column;margin-top:10px;padding:9px 11px;border:1px solid #d9d9d9;border-radius:4px;background:#fafafa;color:#595959}
 .zs-inline-pending b{font-size:9px}.zs-inline-pending span{margin-top:2px;font-size:9px}.zs-inline-pending small{margin-top:3px;color:#8c8c8c;font-size:8px}
 .zs-app button:disabled,.zs-app input:disabled,.zs-app select:disabled{cursor:not-allowed;opacity:.48}
+
+/* Zellship CURRENT parity: operational surfaces reuse the live POS/Admin language. */
+.zs-product-frame{border-radius:0;box-shadow:none;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif}
+.zs-pos-frame{grid-template-columns:50px minmax(0,1fr);grid-template-rows:76px minmax(638px,auto);border:0}
+.zs-pos-frame>.zs-pos-top{grid-template-columns:150px 1fr auto auto;height:76px;gap:20px;padding:0 20px;background:#001529}
+.zs-pos-wordmark{gap:5px}.zs-pos-wordmark>span{font-size:27px;line-height:1;color:#8b3dff}.zs-pos-wordmark>strong{font-size:23px;font-weight:600}
+.zs-pos-top>div:nth-child(2) b,.zs-pos-clock b{font-size:12px;font-weight:500}.zs-pos-top>div:nth-child(2) span,.zs-pos-clock span{font-size:10px;color:rgba(255,255,255,.72)}
+.zs-pos-top .zs-user>span{width:42px;height:42px;border:0;background:#001426;font-size:0}.zs-pos-top .zs-user>span::before{content:"♙";font-size:27px;font-weight:400}.zs-pos-top .zs-user>b{display:none}
+.zs-pos-frame>.zs-pos-side{width:50px;min-height:638px;gap:3px;padding:8px 4px 48px;background:#001529}
+.zs-pos-side button{width:42px;min-height:41px;border-radius:6px;color:#91a0ad}.zs-pos-side button.active{background:#f1a31a;color:#fff}.zs-pos-side button span{font-size:16px}.zs-pos-side .zs-side-menu{margin-bottom:2px}
+.zs-pos-frame .zs-primary{border-color:#f1a31a!important;background:#f1a31a!important;border-radius:6px!important;box-shadow:0 2px 0 rgba(255,205,25,.1);font-weight:400!important}
+.zs-pos-body{height:638px;padding:32px 32px 12px;background:#f5f5f5}
+.zs-agenda-toolbar{min-height:50px;margin:0 0 14px;padding:0;border:0;background:transparent}
+.zs-agenda-toolbar>div:first-child{gap:16px}.zs-agenda-toolbar>div:first-child button{height:40px;padding:0 16px;border:0;background:transparent;font-size:14px}.zs-agenda-toolbar>div:first-child .zs-primary{color:#fff}.zs-filter-trigger{color:#262626}
+.zs-current-calendar-controls{display:flex!important;justify-content:flex-end!important;gap:8px!important}.zs-current-calendar-controls>select{width:auto;min-width:72px;height:40px;padding:0 28px 0 12px;border:1px solid #d9d9d9;border-radius:6px;background:#fff;font-size:14px}
+.zs-agenda-toolbar .zs-segment button{height:40px;padding:0 17px;border:1px solid #d9d9d9;border-radius:0;background:#fff;font-size:14px}.zs-agenda-toolbar .zs-segment button:first-child{border-radius:6px 0 0 6px!important}.zs-agenda-toolbar .zs-segment button:last-child{border-radius:0 6px 6px 0!important}.zs-agenda-toolbar .zs-segment button.active{border-color:#f1a31a!important;background:#fff!important;color:#f1a31a!important;font-weight:400}
+.zs-agenda-layout{height:542px}.zs-calendar-card{border:0;border-radius:0;background:#fff}.zs-weekdays{height:32px;border-bottom:1px solid #ececec}.zs-weekdays b{color:#262626;font-size:11px;font-weight:400}.zs-month-grid{height:510px;grid-template-rows:repeat(6,1fr);gap:0;background:#fff}.zs-month-grid>div{padding:8px;border-right:8px solid #fff;border-bottom:1px solid #ececec;background:#fff}.zs-month-grid>div>span{float:right;color:#262626;font-size:11px}.zs-month-grid>div.outside>span{color:#bfbfbf}.zs-month-grid>div.today{border-top:2px solid #f1a31a;background:#fffbea}.zs-month-grid>div.today>span{width:auto;height:auto;background:transparent;color:#f1a31a}
+.zs-agenda-layout.with-filters{grid-template-rows:auto minmax(0,1fr)}.zs-filter-card{margin-bottom:10px;border:1px solid #e8e8e8;border-radius:4px;background:#fff}.zs-filter-card header b{font-size:12px}.zs-filter-note{border-radius:4px}
+
+/* The expanded appointment contract remains inside the same CURRENT modal grammar. */
+.zs-workflow-modal-layer{background:rgba(0,0,0,.45)}
+.zs-workflow-modal-layer>.zs-current-appointment-modal{width:min(720px,calc(100% - 32px));max-height:660px;border-radius:8px;background:#fff;box-shadow:0 6px 16px rgba(0,0,0,.18)}
+.zs-current-appointment-modal>.zs-page-title{align-items:center;padding:16px 24px!important;border:0!important}.zs-current-appointment-modal>.zs-page-title h1{margin:0;font-size:16px!important;font-weight:600}.zs-current-appointment-modal>.zs-page-title>button{border:0;background:transparent;padding:0;color:#8c8c8c;font-size:24px;line-height:1}
+.zs-current-form-scroll{min-height:0;flex:1;overflow:auto;padding:0 24px}.zs-current-form{display:grid;gap:12px;padding-bottom:12px}
+.zs-current-form input,.zs-current-form select,.zs-current-form textarea{width:100%;min-height:32px;border:1px solid #d9d9d9;border-radius:6px;background:#fff;padding:4px 11px;color:rgba(0,0,0,.88);font-size:12px;line-height:22px}.zs-current-form textarea{min-height:54px;resize:vertical}
+.zs-current-title{margin-bottom:2px}
+.zs-current-form-row{display:grid;grid-template-columns:28px minmax(0,1fr);align-items:start;gap:10px}.zs-current-form-row>div{min-width:0}
+.zs-current-form-icon{position:relative;display:grid;height:32px;place-items:center;color:#262626;font-size:16px}.zs-current-form-icon i{position:absolute;left:-3px;top:6px;color:#ff4d4f;font-size:12px;font-style:normal}.zs-current-form-icon small{display:none}
+.zs-current-datetime{display:grid;grid-template-columns:1.3fr .8fr 1fr;gap:8px}.zs-current-select-action{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}.zs-current-select-action>button{min-height:32px;border:1px solid #d9d9d9;border-radius:6px;background:#fff;padding:0 12px;color:#595959;font-size:12px}
+.zs-current-components{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.zs-current-components label{display:flex;align-items:center;flex-direction:row;gap:7px;padding:7px 10px;border:1px solid #e8e8e8;border-radius:6px;color:#262626}.zs-current-components input{width:auto;min-height:0}.zs-current-components span{display:flex;flex-direction:column}.zs-current-components b{font-size:11px}.zs-current-components small{color:#8c8c8c;font-size:9px}
+.zs-current-calculation{display:flex;align-items:center;gap:12px;margin-top:8px;padding:7px 10px;border-radius:4px;background:#fafafa;color:#595959;font-size:10px}.zs-current-calculation span:first-child{color:#262626;font-weight:600}.zs-current-calculation b{margin-left:auto;color:#262626}
+.zs-current-location{display:grid;grid-template-columns:1fr 1fr;gap:8px}.zs-current-general{display:flex;align-items:center;justify-content:space-between;min-height:32px;border:1px solid #d9d9d9;border-radius:6px;background:#fafafa;padding:4px 11px}.zs-current-general b{font-size:12px}.zs-current-general span{color:#8c8c8c;font-size:10px}
+.zs-current-form>.zs-inline-success,.zs-current-form>.zs-inline-error{margin:0 0 0 38px;border-radius:6px}
+.zs-current-account-note{display:flex;align-items:center;justify-content:space-between;margin-left:38px;padding:8px 11px;border:1px solid #e8e8e8;border-radius:6px;background:#fafafa}.zs-current-account-note b{font-size:11px}.zs-current-account-note span{color:#595959;font-size:10px}
+.zs-demo-tools{margin-left:38px;border-top:1px solid #f0f0f0;padding-top:8px;color:#8c8c8c;font-size:10px}.zs-demo-tools summary{cursor:pointer}.zs-demo-tools label{display:flex;align-items:center;flex-direction:row;gap:8px;margin-top:8px;padding:8px;border:1px dashed #d9d9d9;border-radius:6px}.zs-demo-tools input{width:auto;min-height:0}.zs-demo-tools span{display:flex;flex-direction:column}.zs-demo-tools b{color:#595959;font-size:10px}.zs-demo-tools small{font-size:9px}
+.zs-current-modal-footer{display:flex;flex:0 0 auto;justify-content:flex-end;gap:8px;padding:10px 24px 18px}.zs-current-modal-footer button{height:32px;border:1px solid #d9d9d9;border-radius:6px;background:#fff;padding:0 15px;font-size:12px}.zs-current-modal-footer .zs-primary{padding:0 15px!important}
+
+/* Admin CURRENT uses a white 56 px topbar, 80 px rail and blue actions. */
+.zs-admin-frame{grid-template-columns:80px minmax(0,1fr);border:0}.zs-admin-rail{width:80px;padding:10px 8px;background:#fff}.zs-admin-rail button{width:48px}.zs-admin-top{height:56px;padding:0 8px;background:#fff;box-shadow:0 2px 15px rgba(0,0,0,.05)}.zs-admin-frame .zs-primary{border-color:#1677ff!important;background:#1677ff!important}.zs-admin-body{background:#f5f5f5}.zs-admin-config,.zs-establishment-card{border-radius:2px}.zs-admin-frame input,.zs-admin-frame select{font-size:12px}.zs-admin-frame .zs-section-head>button{font-size:12px}.zs-admin-spaces button,.zs-subnav button{font-size:11px}
+
+@media(max-width:1000px){
+  .zs-pos-frame>.zs-pos-top{grid-template-columns:150px 1fr auto;height:76px}.zs-current-calendar-controls>select{min-width:66px}.zs-current-appointment-modal>.zs-page-title{padding:14px 18px!important}.zs-current-form-scroll{padding:0 18px}.zs-current-modal-footer{padding:10px 18px 16px}
+}
+
+@media(max-width:600px){
+  .zs-workflow-modal-layer>.zs-current-appointment-modal{width:100%;height:100%;max-height:none;border-radius:0}.zs-current-form-scroll{padding:0 14px}.zs-current-form{gap:10px}.zs-current-form-row{grid-template-columns:24px minmax(0,1fr);gap:7px}.zs-current-datetime,.zs-current-location{grid-template-columns:1fr}.zs-current-components{grid-template-columns:1fr}.zs-current-calculation{align-items:flex-start;flex-direction:column;gap:3px}.zs-current-calculation b{margin-left:0}.zs-current-account-note{align-items:flex-start;flex-direction:column;gap:3px;margin-left:31px}.zs-demo-tools{margin-left:31px}.zs-current-form>.zs-inline-success,.zs-current-form>.zs-inline-error{margin-left:31px}.zs-current-modal-footer{padding:9px 14px 12px;background:#fff;box-shadow:0 -2px 8px rgba(0,0,0,.06)}
+}
