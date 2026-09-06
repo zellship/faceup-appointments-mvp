@@ -110,6 +110,7 @@
 .zs-pos-top .zs-user>span{width:42px;height:42px;border:0;background:#001426;font-size:0}.zs-pos-top .zs-user>span::before{content:"♙";font-size:27px;font-weight:400}.zs-pos-top .zs-user>b{display:none}
 .zs-pos-frame>.zs-pos-side{width:50px;min-height:638px;gap:3px;padding:8px 4px 48px;background:#001529}
 .zs-pos-side button{width:42px;min-height:41px;border-radius:6px;color:#91a0ad}.zs-pos-side button.active{background:#f1a31a;color:#fff}.zs-pos-side button span{font-size:16px}.zs-pos-side .zs-side-menu{margin-bottom:2px}
+.zs-current-mark{position:relative;width:28px;height:32px;display:block!important;color:#8b3dff!important;flex:0 0 auto}.zs-current-mark i{position:absolute;top:3px;left:5px;width:14px;height:24px;border:3px solid currentColor;border-radius:3px;transform:skew(-7deg)}.zs-current-mark i:last-child{top:6px;left:9px;opacity:.5}.zs-pos-side svg,.zs-current-form-icon svg,.zs-pos-top .zs-user svg{width:18px;height:18px;display:block}.zs-pos-top .zs-user svg{width:27px;height:27px}.zs-pos-top .zs-user>span::before{content:none}.zs-current-form-icon svg{color:#666}
 .zs-pos-frame .zs-primary{border-color:#f1a31a!important;background:#f1a31a!important;border-radius:6px!important;box-shadow:0 2px 0 rgba(255,205,25,.1);font-weight:400!important}
 .zs-pos-body{height:638px;padding:32px 32px 12px;background:#f5f5f5}
 .zs-agenda-toolbar{min-height:50px;margin:0 0 14px;padding:0;border:0;background:transparent}
