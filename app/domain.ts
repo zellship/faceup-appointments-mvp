@@ -3,14 +3,36 @@ export type AppointmentStatus = "scheduled" | "confirmed" | "canceled" | "comple
 export type AccountStatus = "reserved" | "open";
 export type EvidenceKind = "as-is" | "to-be" | "pending";
 
+export type AccountServiceRecord = {
+  appointmentId: string;
+  commandId: string;
+  commandItemId: string;
+  offer: string;
+  offerKind: "Servicio" | "Kit";
+  provider: string;
+  providerKind: "User" | "Worker";
+  operativeLocation: string;
+  location: string;
+  date: string;
+  time: string;
+  endTime: string;
+  status: AppointmentStatus;
+  price: number;
+  inventoryHeld: boolean;
+};
+
 export type AppointmentRecord = {
   id: string;
   accountId: string;
+  accountOrigin: "new" | "existing";
+  commandId: string;
+  commandItemId: string;
   client: string;
   offer: string;
   offerKind: "Servicio" | "Kit";
   provider: string;
   providerKind: "User" | "Worker";
+  operativeLocation: string;
   location: string;
   date: string;
   time: string;
@@ -22,6 +44,7 @@ export type AppointmentRecord = {
   inventoryHeld: boolean;
   noShowLogged: boolean;
   events: string[];
+  accountServices: AccountServiceRecord[];
 };
 
 export type Journey = {
@@ -37,11 +60,15 @@ export type Journey = {
 export const initialAppointment: AppointmentRecord = {
   id: "CITA-2026-0184",
   accountId: "CTA-03184",
+  accountOrigin: "new",
+  commandId: "CMD-2026-0184",
+  commandItemId: "CI-2026-0184",
   client: "Sofía Martínez",
   offer: "Hydrafacial Premium",
   offerKind: "Kit",
   provider: "Valeria González",
   providerKind: "User",
+  operativeLocation: "Cabinas Faceup",
   location: "Cabina 02",
   date: "25 ago 2026",
   time: "11:30",
@@ -53,6 +80,23 @@ export const initialAppointment: AppointmentRecord = {
   inventoryHeld: true,
   noShowLogged: false,
   events: ["Cita creada · hoy, 09:42", "Cuenta reservada generada · CTA-03184"],
+  accountServices: [{
+    appointmentId: "CITA-2026-0184",
+    commandId: "CMD-2026-0184",
+    commandItemId: "CI-2026-0184",
+    offer: "Hydrafacial Premium",
+    offerKind: "Kit",
+    provider: "Valeria González",
+    providerKind: "User",
+    operativeLocation: "Cabinas Faceup",
+    location: "Cabina 02",
+    date: "25 ago 2026",
+    time: "11:30",
+    endTime: "12:50",
+    status: "scheduled",
+    price: 2130,
+    inventoryHeld: true,
+  }],
 };
 
 export const agendaAppointments: AppointmentRecord[] = [
@@ -125,15 +169,16 @@ export const journeys: Journey[] = [
   { id: "R-10", title: "No-show", description: "Registra no-show y revisa las opciones posteriores sin crear otro estado.", surface: "POS", screen: "detail", scenario: "no-show", issue: "ZEL-2769" },
   { id: "R-11", title: "Completar", description: "Completa la cita y verifica que la Cuenta no se cierre automáticamente.", surface: "POS", screen: "detail", scenario: "complete", issue: "ZEL-2769" },
   { id: "R-12", title: "Experiencia móvil", description: "Alterna Día/Mes y abre Programar cita para completar el flujo móvil.", surface: "POS", screen: "mobile", scenario: "mobile", issue: "ZEL-2770" },
+  { id: "R-13", title: "Dos citas, una Cuenta", description: "Agrega otro servicio a la misma visita con cita, prestador y ubicación independientes.", surface: "POS", screen: "booking", scenario: "multi-account", issue: "ZEL-2768 · ZEL-2769" },
 ];
 
 export const helpContent: Record<string, { title: string; kind: EvidenceKind; body: string; tech?: string }> = {
   appointment: { title: "Cita", kind: "as-is", body: "La Agenda y Appointment existen. El MVP amplía su operación y disponibilidad.", tech: "Appointment · appointments" },
-  account: { title: "Cuenta reservada", kind: "to-be", body: "Cada cita nueva crea una Account nueva en reserved; no se elige una existente.", tech: "Account · accounts · appointment_accounts" },
+  account: { title: "Cuenta de la visita", kind: "to-be", body: "Una cita puede crear una Account reservada o agregarse a una Account elegible de la misma visita. Cada servicio conserva su propia cita y operación.", tech: "Account · Commands · Command Items · Appointments" },
   consumption: { title: "Consumo", kind: "as-is", body: "Se conserva el enum global actual. Agenda no modifica su semántica.", tech: "SERVICE_TYPE.InPlace = 'consumo'" },
   provider: { title: "Prestador", kind: "to-be", body: "Puede ser User, Worker o resolverse como primer prestador disponible.", tech: "User · users / Worker · workers" },
   identity: { title: "Identidad compartida", kind: "pending", body: "TI debe definir cómo detectar que un User y un Worker representan a la misma persona." },
-  location: { title: "Cabina", kind: "to-be", body: "Es un Service Location físico habilitado para citas. Appointment, Account y Command comparten la ubicación.", tech: "Service Location · service_locations" },
+  location: { title: "Cabina", kind: "to-be", body: "Es el Service Location físico reservado por cada cita. Una misma Account puede reunir citas con cabinas distintas.", tech: "Appointment · Service Location · service_locations" },
   general: { title: "Ubicación General", kind: "to-be", body: "Se asigna automáticamente cuando el servicio no requiere recurso físico y no aparece entre las cabinas.", tech: "Service Location de sistema" },
   capacity: { title: "Capacidad de citas", kind: "pending", body: "Es independiente de la capacidad comercial actual. TI definirá su representación técnica." },
   offer: { title: "Servicio o Kit", kind: "to-be", body: "Product es el servicio simple; Mix es el kit configurable. No se relacionan directamente con Service Location.", tech: "Product · products / Mix · mixes" },
