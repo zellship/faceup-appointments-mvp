@@ -45,15 +45,15 @@ const antIcon = (component: unknown) => React.createElement(component as React.C
 
 const currentTabs: { id?: AdminSpace; label: string }[] = [
   { label: "General" },
+  { id: "appointments", label: "Citas" },
+  { label: "Reportes" },
   { label: "Trabajadores" },
   { label: "Terminales" },
   { id: "service-locations", label: "Ubicaciones de servicio" },
   { id: "operative-locations", label: "Ubicaciones operativas" },
   { label: "Categoría de aclaraciones" },
   { label: "Tipos de aclaraciones" },
-  { label: "Reportes" },
   { id: "notifications", label: "Conf. de notificaciones" },
-  { id: "appointments", label: "Citas" },
 ];
 
 function resolveSpace(initialSpace?: AdminSpace | LegacySpace, initialSection?: string): AdminSpace {
