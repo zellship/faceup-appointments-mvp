@@ -56,6 +56,7 @@ export default function Home() {
   };
 
   const runJourney = (journey: Journey) => {
+    setAppointment({ ...initialAppointment, events: [...initialAppointment.events] });
     setActiveJourney(journey);
     setSurface(journey.surface);
     setScreen(journey.screen);
