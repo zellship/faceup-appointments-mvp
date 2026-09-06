@@ -113,18 +113,18 @@ export const agendaAppointments: AppointmentRecord[] = [
 ];
 
 export const journeys: Journey[] = [
-  { id: "R-01", title: "Servicio simple", description: "Cabina y prestador específico.", surface: "POS", screen: "booking", scenario: "simple", issue: "ZEL-2768 · ZEL-2769" },
-  { id: "R-02", title: "Kit configurable", description: "Duración adicional y retención aplicable.", surface: "POS", screen: "booking", scenario: "mix", issue: "ZEL-2767 · ZEL-2768" },
-  { id: "R-03", title: "Primer prestador", description: "Resolución por disponibilidad y prioridad.", surface: "POS", screen: "booking", scenario: "first", issue: "ZEL-2767 · ZEL-2769" },
-  { id: "R-04", title: "Ubicación General", description: "Servicio sin recurso físico.", surface: "POS", screen: "booking", scenario: "general", issue: "ZEL-2766 · ZEL-2769" },
-  { id: "R-05", title: "Concurrencia", description: "Conflicto detectado al guardar.", surface: "POS", screen: "booking", scenario: "concurrency", issue: "ZEL-2768 · ZEL-2769" },
-  { id: "R-06", title: "Reprogramación exitosa", description: "Mismos IDs, nuevo intervalo reservado.", surface: "POS", screen: "reschedule", scenario: "reschedule-ok", issue: "ZEL-2769" },
-  { id: "R-07", title: "Reprogramación fallida", description: "La reserva original se conserva.", surface: "POS", screen: "reschedule", scenario: "reschedule-fail", issue: "ZEL-2769" },
-  { id: "R-08", title: "Registrar llegada", description: "Appointment confirmado y Account abierta.", surface: "POS", screen: "detail", scenario: "arrival", issue: "ZEL-2769" },
-  { id: "R-09", title: "Cancelar", description: "Libera recursos y retención aplicable.", surface: "POS", screen: "detail", scenario: "cancel", issue: "ZEL-2769" },
-  { id: "R-10", title: "No-show", description: "Evento operativo con opciones posteriores.", surface: "POS", screen: "detail", scenario: "no-show", issue: "ZEL-2769" },
-  { id: "R-11", title: "Completar", description: "La Account no se cierra automáticamente.", surface: "POS", screen: "detail", scenario: "complete", issue: "ZEL-2769" },
-  { id: "R-12", title: "Experiencia móvil", description: "Día, Mes y alta completa con scroll.", surface: "POS", screen: "mobile", scenario: "mobile", issue: "ZEL-2770" },
+  { id: "R-01", title: "Servicio simple", description: "Selecciona Servicio, prestador específico, cabina y horario; registra la cita.", surface: "POS", screen: "booking", scenario: "simple", issue: "ZEL-2768 · ZEL-2769" },
+  { id: "R-02", title: "Kit configurable", description: "Selecciona Kit, agrega componentes y registra con retención aplicable.", surface: "POS", screen: "booking", scenario: "mix", issue: "ZEL-2767 · ZEL-2768" },
+  { id: "R-03", title: "Primer prestador", description: "Selecciona Primer prestador disponible y valida la resolución por prioridad.", surface: "POS", screen: "booking", scenario: "first", issue: "ZEL-2767 · ZEL-2769" },
+  { id: "R-04", title: "Ubicación General", description: "Selecciona un servicio sin ubicación física y verifica la asignación General.", surface: "POS", screen: "booking", scenario: "general", issue: "ZEL-2766 · ZEL-2769" },
+  { id: "R-05", title: "Concurrencia", description: "Completa una cita válida; al registrar se simula la ocupación concurrente.", surface: "POS", screen: "booking", scenario: "concurrency", issue: "ZEL-2768 · ZEL-2769" },
+  { id: "R-06", title: "Reprogramación exitosa", description: "Define un intervalo disponible y confirma conservando la misma cita y cuenta.", surface: "POS", screen: "reschedule", scenario: "reschedule-ok", issue: "ZEL-2769" },
+  { id: "R-07", title: "Reprogramación fallida", description: "Define un intervalo válido; al confirmar se simula un conflicto concurrente.", surface: "POS", screen: "reschedule", scenario: "reschedule-fail", issue: "ZEL-2769" },
+  { id: "R-08", title: "Registrar llegada", description: "Confirma la cita y después registra la llegada para abrir la Cuenta.", surface: "POS", screen: "detail", scenario: "arrival", issue: "ZEL-2769" },
+  { id: "R-09", title: "Cancelar", description: "Selecciona Cancelar y confirma la liberación de recursos y retención.", surface: "POS", screen: "detail", scenario: "cancel", issue: "ZEL-2769" },
+  { id: "R-10", title: "No-show", description: "Registra no-show y revisa las opciones posteriores sin crear otro estado.", surface: "POS", screen: "detail", scenario: "no-show", issue: "ZEL-2769" },
+  { id: "R-11", title: "Completar", description: "Completa la cita y verifica que la Cuenta no se cierre automáticamente.", surface: "POS", screen: "detail", scenario: "complete", issue: "ZEL-2769" },
+  { id: "R-12", title: "Experiencia móvil", description: "Alterna Día/Mes y abre Programar cita para completar el flujo móvil.", surface: "POS", screen: "mobile", scenario: "mobile", issue: "ZEL-2770" },
 ];
 
 export const helpContent: Record<string, { title: string; kind: EvidenceKind; body: string; tech?: string }> = {
