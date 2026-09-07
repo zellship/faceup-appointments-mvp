@@ -31,9 +31,8 @@ type Props = {
 type Location = {
   name: string;
   createdAt: string;
-  capability: number;
-  appointmentEnabled: boolean;
-  appointmentCapacity: number;
+  capacity: number;
+  serviceTypes: string[];
   general?: boolean;
 };
 
@@ -115,38 +114,40 @@ function ServiceLocations() {
   const [query, setQuery] = useState("");
   const [editing, setEditing] = useState<number | null>(null);
   const [locations, setLocations] = useState<Location[]>([
-    { name: "General", createdAt: "13 de junio de 2026 12:35", capability: 10000, appointmentEnabled: true, appointmentCapacity: 50, general: true },
-    { name: "Cabina 01", createdAt: "24 de julio de 2026 13:17", capability: 5, appointmentEnabled: true, appointmentCapacity: 1 },
-    { name: "Cabina 02", createdAt: "6 de agosto de 2026 23:45", capability: 10, appointmentEnabled: true, appointmentCapacity: 1 },
-    { name: "Cabina 03", createdAt: "6 de agosto de 2026 23:45", capability: 10, appointmentEnabled: false, appointmentCapacity: 1 },
+    { name: "General", createdAt: "13 de junio de 2026 12:35", capacity: 10000, serviceTypes: ["Consumo"], general: true },
+    { name: "Cabina 01", createdAt: "24 de julio de 2026 13:17", capacity: 1, serviceTypes: ["Consumo"] },
+    { name: "Cabina 02", createdAt: "6 de agosto de 2026 23:45", capacity: 1, serviceTypes: ["Consumo"] },
+    { name: "Cabina 03", createdAt: "6 de agosto de 2026 23:45", capacity: 1, serviceTypes: [] },
   ]);
   const visible = locations.map((location, index) => ({ location, index })).filter(({ location }) => location.name.toLowerCase().includes(query.toLowerCase()));
   const selected = editing === null ? null : locations[editing];
   const update = (change: Partial<Location>) => editing !== null && setLocations(current => current.map((item, index) => index === editing ? { ...item, ...change } : item));
 
   return <div className="zs-current-admin-content">
-    <header className="zs-current-list-head"><div><h3>Listado de ubicaciones de servicio</h3><p>Se conserva el módulo actual; la configuración de citas se agrega dentro de cada ubicación.</p></div><button>{antIcon(PlusOutlined)} Agregar ubicación de servicio</button></header>
+    <header className="zs-current-list-head"><div><h3>Listado de ubicaciones de servicio</h3><p>El módulo actual conserva una sola capacidad y relaciona los tipos de servicio permitidos.</p></div><button>{antIcon(PlusOutlined)} Agregar ubicación de servicio</button></header>
     <label className="zs-current-search"><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Buscar"/><span>{antIcon(SearchOutlined)}</span></label>
     <div className="zs-current-admin-table zs-service-location-table">
-      <div className="head"><b>Nombre</b><b>Fecha de creación</b><b>Capacidad</b><b>Acciones</b></div>
+      <div className="head"><b>Nombre</b><b>Fecha de creación</b><b>Capacidad</b><b>Tipos de servicio</b><b>Acciones</b></div>
       {visible.map(({ location, index }) => <div key={location.name}>
         <span><b>{location.name}</b>{location.general && <em>Por defecto</em>}</span>
         <span>{location.createdAt}</span>
-        <span>{location.capability}</span>
+        <span>{location.capacity}</span>
+        <span>{location.serviceTypes.length ? location.serviceTypes.map(serviceType => <em className="blue" key={serviceType}>{serviceType}</em>) : <em className="muted">Sin asignar</em>}</span>
         <button className="zs-dots" aria-label={`Editar ${location.name}`} onClick={() => setEditing(index)}>{antIcon(MoreOutlined)}</button>
       </div>)}
     </div>
-    <p className="zs-current-footnote">La tabla permanece As-Is. Desde Acciones se configura si la ubicación admite citas y cuántas reservas simultáneas permite.</p>
+    <p className="zs-current-footnote">En Agenda, cada cita consume una unidad de capacidad durante su duración y buffers. Consumo determina qué ubicaciones participan.</p>
     {selected && <div className="zs-admin-modal-layer" onMouseDown={event => event.currentTarget === event.target && setEditing(null)}>
       <section className="zs-admin-modal" role="dialog" aria-modal="true" aria-label={`Editar ${selected.name}`}>
         <header><div><h3>Editar ubicación de servicio</h3><span>{selected.name}</span></div><button onClick={() => setEditing(null)}>×</button></header>
         <div className="zs-admin-modal-body">
           <label>Nombre<input value={selected.name} readOnly/></label>
-          <label>Capacidad comercial<input value={selected.capability} readOnly/></label>
-          <fieldset><legend>Configuración para citas</legend>
-            <Toggle checked={selected.appointmentEnabled} onChange={appointmentEnabled => update({ appointmentEnabled })} label="Habilitar para citas"/>
-            <label>Capacidad de citas<input type="number" min="1" value={selected.appointmentCapacity} disabled={!selected.appointmentEnabled} onChange={event => update({ appointmentCapacity: Number(event.target.value) })}/><small>Citas simultáneas; es independiente de capability.</small></label>
+          <label>Capacidad<input type="number" min="1" value={selected.capacity} onChange={event => update({ capacity: Math.max(1, Number(event.target.value) || 1) })}/><small>Máximo de unidades que pueden ocupar simultáneamente esta ubicación.</small></label>
+          <fieldset><legend>Tipos de servicio permitidos</legend>
+            <label className="zs-check-row"><input type="checkbox" checked={selected.serviceTypes.includes("Consumo")} disabled={selected.general} onChange={event => update({ serviceTypes: event.target.checked ? ["Consumo"] : [] })}/><span><b>Consumo</b><small>{selected.general ? "Asignación obligatoria para la ubicación de sistema." : "Permite utilizar esta ubicación en Accounts, Commands y Agenda."}</small></span></label>
+            <p>{antIcon(CalendarOutlined)} Si Consumo está permitido, cada Appointment reserva una unidad de la capacidad disponible.</p>
             {selected.general && <p>{antIcon(EnvironmentOutlined)} General es una ubicación de sistema y no aparece entre las cabinas seleccionables.</p>}
+            <p>{antIcon(AimOutlined)} Product y Mix no se relacionan aquí; su elegibilidad se conserva en Ubicaciones operativas.</p>
           </fieldset>
         </div>
         <footer><button onClick={() => setEditing(null)}>Cancelar</button><button className="zs-primary" onClick={() => setEditing(null)}>Guardar</button></footer>

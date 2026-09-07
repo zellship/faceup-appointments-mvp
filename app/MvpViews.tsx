@@ -12,7 +12,7 @@ export function ScopeView({ onHelp }: BaseProps) {
     </section>
     <div className="zs-triad">
       <article><Evidence kind="as-is" /><h2>Base que se conserva</h2><ul><li>Agenda y Cita <Help id="appointment" onOpen={onHelp}/></li><li>Cuenta, Command e inventario</li><li>Service Locations y Consumo</li><li>Product, Mix, User y Worker</li></ul></article>
-      <article><Evidence kind="to-be" /><h2>Delta funcional</h2><ul><li>Disponibilidad completa y buffers</li><li>Una Account por visita y citas independientes</li><li>Capacidad separada y General automática</li><li>Operación y reprogramación segura</li></ul></article>
+      <article><Evidence kind="to-be" /><h2>Delta funcional</h2><ul><li>Disponibilidad completa y buffers</li><li>Una Account por visita y citas independientes</li><li>Capacidad reutilizada y General automática</li><li>Operación y reprogramación segura</li></ul></article>
       <article><Evidence kind="pending" /><h2>TI debe resolver</h2><ul><li>Identidad User/Worker</li><li>Concurrencia y atomicidad</li><li>Persistencia de horarios y bloqueos</li><li>Ejecución real de recordatorios</li></ul></article>
     </div>
     <section className="zs-flow-card">
@@ -38,7 +38,7 @@ export function JourneysView({ onRun }: { onRun: (journey: Journey) => void }) {
 }
 
 const requirements = [
-  ["ZEL-2766", "Service Location", "Consolidar Service Location, retirar Appointment Location y separar capacidad de citas."],
+  ["ZEL-2766", "Service Location", "Consolidar Service Location, retirar Appointment Location y reutilizar su capacidad para la ocupación simultánea."],
   ["ZEL-2767", "Configurar Agenda", "Ubicación operativa, prestadores, disponibilidad, bloqueos, duración, buffers, prioridad y recordatorios."],
   ["ZEL-2768", "Reservar y operar", "Crear o reutilizar la Account de la visita y generar una Cita, Command y Command Item independientes por servicio."],
   ["ZEL-2769", "Gestión POS", "Agenda, alta, detalle, estados, llegada, no-show, cancelación y reprogramación."],
@@ -46,9 +46,9 @@ const requirements = [
 ];
 
 const locationReuse = [
-  ["Módulo base", "Nombre, fecha de creación, capacidad comercial, General por defecto y acciones permanecen As-Is.", "Faceup + OVYE"],
-  ["Capacidad de citas", "Se configura dentro de la ubicación; no sustituye capability ni altera la tabla comercial.", "Sólo Agenda"],
-  ["Habilitación para citas", "Activa la ubicación como recurso reservable sin duplicar Service Location.", "Sólo Agenda"],
+  ["Módulo base", "Nombre, fecha de creación, capacidad, General por defecto y acciones permanecen As-Is.", "Faceup + OVYE"],
+  ["Capacidad", "Representa la ocupación simultánea del recurso. En Agenda, cada cita consume una unidad durante su intervalo completo.", "Faceup + OVYE"],
+  ["Tipos de servicio", "Definen qué flujos pueden utilizar cada ubicación. Consumo habilita su participación en Agenda.", "Faceup + OVYE"],
   ["Agrupación y estado", "Edificio, piso o zona y estado de ocupación amplían el detalle sin cambiar el núcleo de la ubicación.", "OVYE reutilizable"],
   ["Expediente de ubicación", "Descripción, imágenes, atributos, actualizaciones, contratos relacionados y activos viven como secciones adicionales.", "OVYE reutilizable"],
 ];
@@ -64,7 +64,7 @@ const edgeCases = [
   ["Account no elegible", "Bloqueado", "Las Accounts to_pay, close o canceled no reciben nuevas citas; se crea una nueva."],
   ["Kit con componentes", "Una Cita", "El Mix es el servicio programable; sus componentes no generan citas independientes."],
   ["Cancelación o reprogramación parcial", "Por Cita", "La acción afecta únicamente la Cita y el Command Item relacionados; las demás citas permanecen activas."],
-  ["Capacidad de cabina", "Por Cita", "Cada Cita consume una unidad del Service Location durante su intervalo completo."],
+  ["Capacidad de ubicación", "Por ocupación", "Cada Cita consume una unidad de capacity durante su duración y buffers; al alcanzar el límite no se admiten traslapes adicionales."],
   ["Rangos cruzados o duplicados", "Bloqueado", "Cada rango debe iniciar antes de terminar y no puede superponerse con otro del mismo día."],
   ["24 horas y No disponible", "Excluyentes", "Activar una opción desactiva rangos y la otra opción."],
   ["Cambio concurrente al guardar", "Revalidar", "Prestador, ubicación, horario e inventario se confirman de forma atómica antes de crear la operación."],
